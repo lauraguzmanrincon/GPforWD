@@ -147,10 +147,11 @@ interpolateValues <- function(tableNoDup, period_inHours){
 #' Compute error measures
 #' Error 2 is the one that makes sense. Divides by sd.
 #' Notes: copied from R03.R/"Compute error measures"
+#' Control: 20210917 - add error measure 3, based on relative error
 computeErrorMeasures <- function(dataClose, parameterList){
   list2env(parameterList, environment())
   
-  # Measure 1: ?  Measure 2: standardised one
+  # Measure 1: ?  Measure 2: standardised one Measure 3: relative error
   dataClose[, ":="(teffError = as.numeric(NA), cnError = as.numeric(NA), massError = as.numeric(NA), mdotError = as.numeric(NA))]
   for(ii in 1:nrow(dataClose)){
     #dataClose[idGr == ii, Teff]
@@ -161,6 +162,8 @@ computeErrorMeasures <- function(dataClose, parameterList){
     dataClose[idGr == ii, teffError := mean(transfSamplesTeff)]
     transfSamplesTeff2 <- abs(samplesTeff - dataClose[idGr == ii, Teff])/(sd(dataClose$Teff, na.rm = T))
     dataClose[idGr == ii, teffError2 := mean(transfSamplesTeff2)]
+    transfSamplesTeff3 <- abs(samplesTeff - dataClose[idGr == ii, Teff])/abs(samplesTeff)
+    dataClose[idGr == ii, teffError3 := mean(transfSamplesTeff3)]
     
     varParameters <- logCNParameters
     #samplesCN <- runif(5000, min = varParameters["min"], max = varParameters["max"]) # UNIF
@@ -169,6 +172,8 @@ computeErrorMeasures <- function(dataClose, parameterList){
     dataClose[idGr == ii, cnError := mean(transfSamplesCN)]
     transfSamplesCN2 <- abs(samplesCN - dataClose[idGr == ii, logCN])/(sd(dataClose$logCN, na.rm = T))
     dataClose[idGr == ii, cnError2 := mean(transfSamplesCN2)]
+    transfSamplesCN3 <- abs(samplesCN - dataClose[idGr == ii, logCN])/abs(samplesCN)
+    dataClose[idGr == ii, cnError3 := mean(transfSamplesCN3)]
     
     varParameters <- massParameters
     samplesMass <- runif(5000, min = varParameters["min"], max = varParameters["max"]) # UNIF
@@ -176,6 +181,8 @@ computeErrorMeasures <- function(dataClose, parameterList){
     dataClose[idGr == ii, massError := mean(transfSamplesMass)]
     transfSamplesMass2 <- abs(samplesMass - dataClose[idGr == ii, star_mass])/(sd(dataClose$star_mass, na.rm = T))
     dataClose[idGr == ii, massError2 := mean(transfSamplesMass2)]
+    transfSamplesMass3 <- abs(samplesMass - dataClose[idGr == ii, star_mass])/abs(samplesMass)
+    dataClose[idGr == ii, massError3 := mean(transfSamplesMass3)]
     
     varParameters <- mdotParameters
     #samplesMdot <- runif(5000, min = varParameters["min"], max = varParameters["max"]) # UNIF
@@ -184,6 +191,8 @@ computeErrorMeasures <- function(dataClose, parameterList){
     dataClose[idGr == ii, mdotError := mean(transfSamplesMdot)]
     transfSamplesMdot2 <- abs(samplesMdot - dataClose[idGr == ii, lg_mstar_dot_1])/(sd(dataClose$lg_mstar_dot_1, na.rm = T))
     dataClose[idGr == ii, mdotError2 := mean(transfSamplesMdot2)]
+    transfSamplesMdot3 <- abs(samplesMdot - dataClose[idGr == ii, lg_mstar_dot_1])/abs(samplesMdot)
+    dataClose[idGr == ii, mdotError3 := mean(transfSamplesMdot3)]
   }
   dataClose[, totalError := (teffError + cnError + massError + mdotError)/ 4]
   dataClose[, totalError2 := (teffError2 + cnError2 + massError2 + mdotError2)/ 4]
