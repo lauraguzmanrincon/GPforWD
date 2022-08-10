@@ -1,4 +1,6 @@
 
+# This is the only file that matters!
+
 setwd("/home/laura/Documents/PostPhD/WhiteDwarfs/")
 source("/home/laura/Documents/PostPhD/JUNIPER/local_data_interventions/R_files/00_Functions.R")
 source("/home/laura/Documents/PostPhD/WhiteDwarfs/R04Fun_Main.R")
@@ -14,11 +16,15 @@ library(dplyr) # needed for plots (case_when)
 #parameterList <- getObservables(type = "EBVfree")
 #parameterList <- getObservables(type = "EBVfixed")
 
-##readSaveSimulations(type = "EBVfree", index = 1, dateToday = "22022021") # ~3min
+# ADD new tracks in this block, ignore other blocks
+##readSaveSimulations(type = "EBVfree", index = 1, dateToday = "22022021") # ~3min # replaced by index = 4 # TODO storage inefficient
 ##readSaveSimulations(type = "EBVfree", index = 2, dateToday = "08102021") # ~0min
+##readSaveSimulations(type = "EBVfree", index = 3, dateToday = "09082022") # ~0min
+##readSaveSimulations(type = "EBVfree", index = 4, dateToday = "09082022") # ~1min
 ##readSaveSimulations(type = "EBVfixed", index = 1, dateToday = "06042021") # ~5min
 ##readSaveSimulations(type = "EBVfixed", index = 2, dateToday = "02072021") # ~5min
 ##readSaveSimulations(type = "EBVfixed", index = 3, dateToday = "07072021") # ~5min
+##readSaveSimulations(type = "EBVfixed", index = 4, dateToday = "07072021") # ~5min
 
 #tableNoDup <- stackSimulationsNoDup("EBVfree", 1)
 #tableNoDup <- stackSimulationsNoDup("EBVfixed", 1:2)
@@ -29,7 +35,7 @@ library(dplyr) # needed for plots (case_when)
 
 # Load - process error for BO
 parameterList <- getObservables(type = "EBVfree") # "EBVfixed" "EBVfree"
-tableNoDup <- stackSimulationsNoDup("EBVfree", 1:2) # "EBVfixed", 1:3 "EBVfree", 1:2
+tableNoDup <- stackSimulationsNoDup("EBVfree", 2:4) # "EBVfixed", 1:3. "EBVfree", 1:2(OLD) 2:4(09.08.2022)
 dataClose <- interpolateValues(tableNoDup, parameterList$periodHourMeasure) # ~2sec
 dataCloseError <- computeErrorMeasures(dataClose, parameterList) # ~3sec / ~10sec
 
@@ -68,7 +74,8 @@ write.csv(x = dataCloseError[, .(mass = md, porb = pp, label = gsub(",", ";", gr
                                  teffError3, cnError3, massError3, mdotError3)],
 #          file = paste0("GPyOpt/Output_errorFromR/File", todayIs, "_R04_EBVfixed_sim1to3_allErrors1to3.csv"), row.names = F)
 #          file = paste0("GPyOpt/Output_errorFromR/File", todayIs, "_R04_EBVfree_sim1_allErrors1.csv"), row.names = F)
-          file = paste0("GPyOpt/Output_errorFromR/File", todayIs, "_R04_EBVfree_sim1_allErrors1to2.csv"), row.names = F)
+#          file = paste0("GPyOpt/Output_errorFromR/File", todayIs, "_R04_EBVfree_sim1_allErrors1to2.csv"), row.names = F)
+          file = paste0("GPyOpt/Output_errorFromR/File", todayIs, "_R04_EBVfree_sim2to4_allErrors1to3.csv"), row.names = F)
 
 # Individual
 # (fixed)

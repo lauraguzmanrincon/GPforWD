@@ -104,6 +104,7 @@ stackSimulationsNoDup <- function(type, indices){
     index <- indices[ii]
     # Assumes uniqueness in file dates:
     outputFile <- list.files(path = "Data/ProcessedData/", pattern = glob2rx(paste0("R04Fun_", ifelse(type == "EBVfree", "Free", "Fixed"), sprintf("%03d", index), "_*.RData")))
+    cat(paste0("Data/ProcessedData/", outputFile), "\n")
     load(paste0("Data/ProcessedData/", outputFile))
     tableDataList[[ii]] <- data.table(tableData, simIndex = index)
   }
