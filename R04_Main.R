@@ -22,6 +22,7 @@ library(dplyr) # needed for plots (case_when)
 ##readSaveSimulations(type = "EBVfree", index = 3, dateToday = "09082022") # ~0min
 ##readSaveSimulations(type = "EBVfree", index = 4, dateToday = "09082022") # ~1min
 ##readSaveSimulations(type = "EBVfree", index = 5, dateToday = "10082022") # ~1min # from whatsapp
+readSaveSimulations(type = "EBVfree", index = 6, dateToday = "11082022")
 ##readSaveSimulations(type = "EBVfixed", index = 1, dateToday = "06042021") # ~5min
 ##readSaveSimulations(type = "EBVfixed", index = 2, dateToday = "02072021") # ~5min
 ##readSaveSimulations(type = "EBVfixed", index = 3, dateToday = "07072021") # ~5min
@@ -36,7 +37,7 @@ library(dplyr) # needed for plots (case_when)
 
 # Load - process error for BO
 parameterList <- getObservables(type = "EBVfree") # "EBVfixed" "EBVfree"
-tableNoDup <- stackSimulationsNoDup("EBVfree", 2:5) # "EBVfixed", 1:3. "EBVfree", 1:2(OLD) 2:4(09.08.2022)
+tableNoDup <- stackSimulationsNoDup("EBVfree", 2:6) # "EBVfixed", 1:3. "EBVfree", 1:2(OLD) 2:4(09.08.2022)
 dataClose <- interpolateValues(tableNoDup, parameterList$periodHourMeasure) # ~2sec
 dataCloseError <- computeErrorMeasures(dataClose, parameterList) # ~3sec / ~10sec
 
